@@ -1,0 +1,16 @@
+SELECT
+  u.first_name,
+  u.country,
+  u.profile_picture,
+  SUM(a.point) AS total_points,
+  RANK() OVER (ORDER BY SUM(a.point) DESC) AS rank
+FROM
+  users u
+JOIN
+  activity_logs al ON u.id = al.user_id
+JOIN
+  activities a ON al.activity_id = a.id
+GROUP BY
+  u.id
+ORDER BY
+  total_points DESC;
